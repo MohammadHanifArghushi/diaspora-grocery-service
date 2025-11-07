@@ -10,6 +10,9 @@ import fi.haagahelia.diaspora_grocery_service.domain.Category;
 import fi.haagahelia.diaspora_grocery_service.domain.CategoryRepository;
 import fi.haagahelia.diaspora_grocery_service.domain.Product;
 import fi.haagahelia.diaspora_grocery_service.domain.ProductRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import fi.haagahelia.diaspora_grocery_service.domain.User;
+import fi.haagahelia.diaspora_grocery_service.domain.UserRepository;
 
 @SpringBootApplication
 public class DiasporaGroceryServiceApplication {
@@ -22,7 +25,9 @@ public class DiasporaGroceryServiceApplication {
     @Bean
     public CommandLineRunner dataSeeder(
             ProductRepository productRepository, 
-            CategoryRepository categoryRepository) {
+            CategoryRepository categoryRepository,
+            UserRepository userRepository,      
+            PasswordEncoder passwordEncoder) {
         
         return (args) -> {
             
@@ -83,6 +88,33 @@ public class DiasporaGroceryServiceApplication {
             productRepository.save(oil);
             productRepository.save(flour);
             productRepository.save(greenTea);
+
+
+            System.out.println("Seeding user accounts...");
+            
+            
+            User admin = new User(
+                "admin", 
+                passwordEncoder.encode("adminpass"),
+                "admin@diaspora.com", 
+                "ADMIN"
+            );
+            
+            
+            User regularUser = new User(
+                "user", 
+                passwordEncoder.encode("userpass"), 
+                "user@diaspora.com", 
+                "USER"
+            );
+            
+            if (userRepository.findByUsername(admin.getUsername()).isEmpty()) {
+                userRepository.save(admin);
+            }
+
+            if (userRepository.findByUsername(regularUser.getUsername()).isEmpty()) {
+                userRepository.save(regularUser);
+            }
 
             System.out.println("Data seeding complete!");
         };

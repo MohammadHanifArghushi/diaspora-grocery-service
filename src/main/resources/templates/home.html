@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Home - Diaspora Grocery Service</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Welcome to the Diaspora Grocery Service!</h1>
+        <p>You have successfully logged in.</p>
+        
+        <p>Logged in as: 
+            <span sec:authentication="name">Username Placeholder</span> 
+            (Role: <span sec:authentication="authorities">Role Placeholder</span>)
+        </p>
+
+        <p class="mt-4">
+            <a href="/productlist" class="btn btn-primary">Go to Product List (Coming Soon!)</a>
+        </p>
+        
+        <form th:action="@{/logout}" method="post" class="mt-4">
+            <input type="submit" value="Sign Out" class="btn btn-danger"/>
+        </form>
+    </div>
+</body>
+</html>
