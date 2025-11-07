@@ -1,4 +1,4 @@
-This project, Diaspora Grocery Service, is a Spring Boot app I built for my Backend Programming course and is part of my thesis at Haaga-Helia UAS too . The main idea is to help Afghans living abroad buy groceries online for their families back home.
+This project, Diaspora Grocery Service, is a Spring Boot app I built for my Backend Programming course and is part of my thesis at Haaga helia UAS too. The main idea is to help Afghans living abroad buy groceries online for their families back home.
 
 So far, I’ve finished setting up the backend with product and category management, secure login (Spring Security), and a full REST API for admins and users. The database uses PostgreSQL, and everything runs smoothly locally.
 

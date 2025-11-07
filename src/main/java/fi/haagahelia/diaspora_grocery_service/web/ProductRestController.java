@@ -34,7 +34,6 @@ public class ProductRestController {
 
     
     //I have used this in product detail pages to fetch individual product info
-     
     @GetMapping("/products/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable Long id) {
         Optional<Product> product = productRepository.findById(id);

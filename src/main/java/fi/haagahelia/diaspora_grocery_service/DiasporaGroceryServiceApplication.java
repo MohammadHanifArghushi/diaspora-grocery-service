@@ -31,6 +31,14 @@ public class DiasporaGroceryServiceApplication {
         
         return (args) -> {
             
+            // we check if the database is empty before seeding otherwise create duplicates each time we run the application
+            // when I tested this, I had 71 products because i ran it so many times 
+            // and each time it was adding same products again and again
+            if (categoryRepository.count() > 0) {
+                System.out.println("Database already contains data. So we Skip seeding.");
+                return;
+            }
+            
             // first we create and save some categories as below
             System.out.println("Seeding categories...");
             Category riceCat = new Category("Staple Grains");
@@ -44,7 +52,7 @@ public class DiasporaGroceryServiceApplication {
             // second we create and save some products for the categories created above
             System.out.println("Seeding products...");
             
-            // Product1: Linked to Staple Grains category which is riceCat
+            
             Product rice = new Product(
                 "Afghan Basmati Rice 10kg", 
                 "Premium long grain basmati rice, essential for palaw.", 
@@ -54,7 +62,7 @@ public class DiasporaGroceryServiceApplication {
                 riceCat
             );
             
-            // Product 2:Linked to Cooking Oil & Fats category which is oilCat
+            
             Product oil = new Product(
                 "SunPure Cooking Oil 5L", 
                 "High quality vegetable oil for daily cooking.", 
@@ -64,7 +72,7 @@ public class DiasporaGroceryServiceApplication {
                 oilCat
             );
             
-            // Product 3:Linked to Staple Grains category which is riceCat
+            
             Product flour = new Product(
                 "Whole Wheat Flour 25kg", 
                 "Coarse ground flour for traditional Afghan bread.", 
@@ -74,7 +82,6 @@ public class DiasporaGroceryServiceApplication {
                 riceCat
             );
             
-            // Product 4: Linked to Tea & Beverages category which is teaCat
             Product greenTea = new Product(
                 "Ahmad Green Cardamom Tea 500g", 
                 "Popular green tea blend with hints of cardamom.", 
