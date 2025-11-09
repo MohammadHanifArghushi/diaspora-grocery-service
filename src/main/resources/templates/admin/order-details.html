@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Details - Admin</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <style>
+        .badge {
+            padding: 5px 10px;
+            border-radius: 3px;
+            color: white;
+            font-weight: bold;
+        }
+        .badge-pending { background-color: #ffc107; }
+        .badge-paid { background-color: #28a745; }
+        .badge-delivered { background-color: #007bff; }
+        .info-card {
+            background-color: #f8f9fa;
+            border-left: 4px solid #007bff;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">Diaspora Grocery - Order Details</span>
+            <span class="text-white">
+                Logged in as: <span sec:authentication="name">Admin</span>
+            </span>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Order #<span th:text="${order.id}">1</span></h2>
+            <span th:class="'badge badge-' + ${order.status.name().toLowerCase()}" 
+                  th:text="${order.status}"
+                  style="font-size: 1.2rem;">PENDING</span>
+        </div>
+
+        <!-- Order Information -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="info-card">
+                    <h5>Order Information</h5>
+                    <p><strong>Order Date:</strong> <span th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm:ss')}">2025-11-07 14:30:00</span></p>
+                    <p><strong>Payer Email:</strong> <span th:text="${order.payerEmail}">customer@email.com</span></p>
+                    <p><strong>Total Amount:</strong> <span th:text="${'€' + order.totalAmount}" class="text-success fw-bold">€50.00</span></p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="info-card">
+                    <h5>Recipient Information</h5>
+                    <p><strong>Name:</strong> <span th:text="${order.recipient.name}">John Doe</span></p>
+                    <p><strong>Phone:</strong> <span th:text="${order.recipient.phone}">+93 123 456 789</span></p>
+                    <p><strong>Address:</strong> <span th:text="${order.recipient.address}">123 Main St</span></p>
+                    <p><strong>City:</strong> <span th:text="${order.recipient.city}">Kabul</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Items -->
+        <div class="card mt-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Order Items</h5>
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Product</th>
+                            <th>Unit Price</th>
+                            <th>Quantity</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item : ${order.items}">
+                            <td>
+                                <strong th:text="${item.product.name}">Product Name</strong><br>
+                                <small class="text-muted" th:text="${item.product.description}">Description</small>
+                            </td>
+                            <td th:text="${'€' + item.unitPrice}">€10.00</td>
+                            <td>
+                                <span class="badge bg-secondary" th:text="${item.quantity}">2</span>
+                            </td>
+                            <td>
+                                <strong th:text="${'€' + (item.unitPrice.multiply(T(java.math.BigDecimal).valueOf(item.quantity)))}">€20.00</strong>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot class="table-light">
+                        <tr>
+                            <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                            <td><strong class="text-success" th:text="${'€' + order.totalAmount}">€50.00</strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <!-- Update Status -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0">Update Order Status</h5>
+            </div>
+            <div class="card-body">
+                <form th:action="@{/admin/orders/{id}/status(id=${order.id})}" method="post" class="row g-3">
+                    <div class="col-md-6">
+                        <label for="status" class="form-label">Change Status</label>
+                        <select name="status" id="status" class="form-select">
+                            <option th:each="status : ${T(fi.haagahelia.diaspora_grocery_service.domain.OrderStatus).values()}"
+                                    th:value="${status}"
+                                    th:text="${status}"
+                                    th:selected="${status == order.status}">
+                                PENDING
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 d-flex align-items-end">
+                        <button type="submit" class="btn btn-success">Update Status</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        
+        <div class="mt-4 mb-4">
+            <a th:href="@{/admin/orders}" class="btn btn-secondary">← Back to Orders</a>
+        </div>
+    </div>
+</body>
+</html>

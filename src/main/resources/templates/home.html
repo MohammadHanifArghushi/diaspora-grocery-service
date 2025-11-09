@@ -12,9 +12,12 @@
             <span sec:authentication="name">Username Placeholder</span>
         </p>
 
-        <p class="mt-4">
+        <div class="mt-4">
             <a href="/productlist" class="btn btn-primary">Go to Product List (Coming Soon!)</a>
-        </p>
+            
+            <!-- only our admin can see this link -->
+            <a sec:authorize="hasRole('ADMIN')" href="/admin/orders" class="btn btn-success">Manage Orders (Admin)</a>
+        </div>
         
         <form th:action="@{/logout}" method="post" class="mt-4">
             <input type="submit" value="Sign Out" class="btn btn-danger"/>
