@@ -91,10 +91,71 @@ public class DiasporaGroceryServiceApplication {
                 teaCat
             );
             
+            
+            Product whiteRice = new Product(
+                "Jasmine White Rice 20kg",
+                "Fragrant jasmine rice, perfect for everyday meals.",
+                new BigDecimal("28.99"),
+                "/images/jasmine-rice.jpg",
+                100,
+                riceCat
+            );
+            
+            Product pulses = new Product(
+                "Mixed Lentils & Beans 5kg",
+                "Nutritious mix of red lentils, chickpeas, and beans.",
+                new BigDecimal("12.50"),
+                "/images/lentils.jpg",
+                90,
+                riceCat
+            );
+            
+            Product palmoil = new Product(
+                "Red Palm Oil 2L",
+                "Traditional palm oil for authentic cooking.",
+                new BigDecimal("14.99"),
+                "/images/palmoil.jpg",
+                60,
+                oilCat
+            );
+            
+            Product ghee = new Product(
+                "Clarified Butter Ghee 500ml",
+                "Pure ghee for rich, traditional flavor.",
+                new BigDecimal("16.75"),
+                "/images/ghee.jpg",
+                75,
+                oilCat
+            );
+            
+            Product blackTea = new Product(
+                "Black Tea Assam 400g",
+                "Strong black tea, perfect for tea lovers.",
+                new BigDecimal("7.50"),
+                "/images/blacktea.jpg",
+                140,
+                teaCat
+            );
+            
+            Product coffee = new Product(
+                "Ground Coffee Arabica 250g",
+                "Premium ground coffee, smooth and aromatic.",
+                new BigDecimal("9.99"),
+                "/images/coffee.jpg",
+                85,
+                teaCat
+            );
+            
             productRepository.save(rice);
             productRepository.save(oil);
             productRepository.save(flour);
             productRepository.save(greenTea);
+            productRepository.save(whiteRice);
+            productRepository.save(pulses);
+            productRepository.save(palmoil);
+            productRepository.save(ghee);
+            productRepository.save(blackTea);
+            productRepository.save(coffee);
 
 
             System.out.println("Seeding user accounts...");

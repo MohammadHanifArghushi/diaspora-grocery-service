@@ -15,3 +15,17 @@ Both users and admins can interact with the new REST API endpoints. Users can cr
 
 All endpoints are secured, role-based, and tested successfully.
 Current status: Order management complete, next step is integrating Stripe payments and email notifications.
+___________________________________________________________________________
+
+I added online payments using Stripe and automatic emails for order confirmations, payments, and deliveries.
+
+The app now uses the Stripe Java SDK for handling payments and Spring Mail for sending emails through Gmail. When a user places an order, the system creates a Stripe PaymentIntent and sends a confirmation email. Once the payment goes through, a Stripe webhook updates the order status to PAID and sends another email to confirm it.
+
+Admins also trigger emails when updating order statuses, like when an order gets delivered. Everything runs smoothly in test mode, and it’s ready for production once the frontend checkout page is connected.
+
+Current status: Payments and email features done, next up: frontend Stripe checkout and cloud deployment.
+
+
+
+
+

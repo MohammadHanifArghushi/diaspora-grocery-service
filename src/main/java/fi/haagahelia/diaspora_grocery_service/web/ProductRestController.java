@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import fi.haagahelia.diaspora_grocery_service.domain.Category;
+import fi.haagahelia.diaspora_grocery_service.domain.CategoryRepository;
 import fi.haagahelia.diaspora_grocery_service.domain.Product;
 import fi.haagahelia.diaspora_grocery_service.domain.ProductRepository;
 import jakarta.validation.Valid;
@@ -21,6 +23,9 @@ public class ProductRestController {
 
     @Autowired
     private ProductRepository productRepository;
+    
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @GetMapping("/products")
     public ResponseEntity<List<Product>> getAllProducts() {
@@ -40,6 +45,19 @@ public class ProductRestController {
         
         if (product.isPresent()) {
             return ResponseEntity.ok(product.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // get products by category ID
+    @GetMapping("/products/category/{categoryId}")
+    public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable Long categoryId) {
+        Optional<Category> category = categoryRepository.findById(categoryId);
+        
+        if (category.isPresent()) {
+            List<Product> products = productRepository.findByCategory(category.get());
+            return ResponseEntity.ok(products);
         } else {
             return ResponseEntity.notFound().build();
         }

@@ -3,6 +3,7 @@ package fi.haagahelia.diaspora_grocery_service.web;
 import fi.haagahelia.diaspora_grocery_service.domain.Order;
 import fi.haagahelia.diaspora_grocery_service.domain.OrderRepository;
 import fi.haagahelia.diaspora_grocery_service.domain.OrderStatus;
+import fi.haagahelia.diaspora_grocery_service.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,9 @@ public class AdminController {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private EmailService emailService;
 
     //display all orders
     @GetMapping("/orders")
@@ -75,6 +79,14 @@ public class AdminController {
             Order order = orderOptional.get();
             order.setStatus(status);
             orderRepository.save(order);
+
+            // sending email notification about status update
+            emailService.sendOrderStatusUpdateEmail(order);
+
+            // we send delivery notification if status is DELIVERED
+            if (status == OrderStatus.DELIVERED) {
+                emailService.sendDeliveryNotificationEmail(order);
+            }
         }
         
         return "redirect:/admin/orders";

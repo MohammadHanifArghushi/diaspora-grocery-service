@@ -13,10 +13,10 @@
         </p>
 
         <div class="mt-4">
-            <a href="/productlist" class="btn btn-primary">Go to Product List (Coming Soon!)</a>
+            <a href="/productlist" class="btn btn-primary">🛒 Go to Product List</a>
             
             <!-- only our admin can see this link -->
-            <a sec:authorize="hasRole('ADMIN')" href="/admin/orders" class="btn btn-success">Manage Orders (Admin)</a>
+            <a sec:authorize="hasRole('ADMIN')" href="/admin/orders" class="btn btn-success">📋 Manage Orders (Admin)</a>
         </div>
         
         <form th:action="@{/logout}" method="post" class="mt-4">

@@ -13,11 +13,17 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
     private final RecipientRepository recipientRepository;
+    private final PaymentService paymentService;
+    private final EmailService emailService;
 
-    public OrderService(OrderRepository orderRepository, ProductRepository productRepository, RecipientRepository recipientRepository) {
+    public OrderService(OrderRepository orderRepository, ProductRepository productRepository, 
+                        RecipientRepository recipientRepository, PaymentService paymentService,
+                        EmailService emailService) {
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
         this.recipientRepository = recipientRepository;
+        this.paymentService = paymentService;
+        this.emailService = emailService;
     }
 
     
@@ -52,7 +58,19 @@ public class OrderService {
 
         order.setTotalAmount(total[0]);
         order.setItems(orderItems);
-        return orderRepository.save(order);
+        Order savedOrder = orderRepository.save(order);
+
+       
+        emailService.sendOrderConfirmationEmail(savedOrder);
+
+        // Creating Stripe PaymentIntent
+        try {
+            paymentService.createPaymentIntent(savedOrder.getTotalAmount(), payerEmail, savedOrder.getId());
+        } catch (Exception e) {
+            System.err.println("Failed to create Stripe payment intent: " + e.getMessage());
+        }
+
+        return savedOrder;
     }
 
     

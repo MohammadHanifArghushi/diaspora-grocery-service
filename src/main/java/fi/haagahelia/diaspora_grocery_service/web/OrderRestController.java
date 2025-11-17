@@ -42,12 +42,23 @@ public class OrderRestController {
         }
     }
 
-    // this 
+    
     @GetMapping("/orders/{id}")
     public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
         Optional<Order> order = orderRepository.findById(id);
         return order.map(ResponseEntity::ok)
                     .orElse(ResponseEntity.notFound().build());
+    }
+
+    // Get current user's order history
+    @GetMapping("/orders/my-orders")
+    public ResponseEntity<List<Order>> getMyOrders(@RequestParam String email) {
+        try {
+            List<Order> orders = orderRepository.findByPayerEmail(email);
+            return ResponseEntity.ok(orders);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     // this endpoint is admin only

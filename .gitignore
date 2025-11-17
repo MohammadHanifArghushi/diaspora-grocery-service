@@ -31,3 +31,21 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Local helper documentation (keep locally, don't commit) ###
+FRONTEND_VS_BACKEND.md
+REACT_UI_GUIDE.md
+QUICK_START.md
+SETUP_COMPLETE.md
+CHANGES_MADE.md
+BACKEND_COMPLETE.md
+
+### Local session cookies and logs ###
+cookies.txt
+*.log
+app.log
+
+### Environment files with secrets ###
+.env
+.env.local
+.env.*.local
