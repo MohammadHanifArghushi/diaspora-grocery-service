@@ -63,12 +63,16 @@ public class OrderService {
        
         emailService.sendOrderConfirmationEmail(savedOrder);
 
-        // Creating Stripe PaymentIntent
-        try {
-            paymentService.createPaymentIntent(savedOrder.getTotalAmount(), payerEmail, savedOrder.getId());
-        } catch (Exception e) {
-            System.err.println("Failed to create Stripe payment intent: " + e.getMessage());
-        }
+        /* FUTURE FEATURE: Stripe Payment Integration 
+         * I would need to uncomment this block to enable Stripe payment processing
+         * This will create a PaymentIntent and require payment confirmation before completing the order
+         * 
+         * try {
+         *     paymentService.createPaymentIntent(savedOrder.getTotalAmount(), payerEmail, savedOrder.getId());
+         * } catch (Exception e) {
+         *     System.err.println("Failed to create Stripe payment intent: " + e.getMessage());
+         * }
+         */
 
         return savedOrder;
     }

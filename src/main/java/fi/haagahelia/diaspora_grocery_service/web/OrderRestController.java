@@ -25,7 +25,8 @@ public class OrderRestController {
     @Autowired
     private OrderRepository orderRepository;
 
-    // our checkout endpoint
+    // our checkout endpoint, creates order directly without payment, because i 
+    //have to show a working demo without payment integration to the teacher first
     @PostMapping("/orders/checkout")
     public ResponseEntity<Order> createOrder(@Valid @RequestBody CheckoutRequest request) {
         try {
@@ -35,6 +36,15 @@ public class OrderRestController {
                 request.getItems()
             );
             return ResponseEntity.status(HttpStatus.CREATED).body(order);
+            
+            /* this is also a FUTURE FEATURE: Stripe Payment Integration
+             * To enable payment processing, we need. to modify this to return payment intent client secret:
+            
+             * Map<String, String> response = new HashMap<>();
+             * response.put("clientSecret", paymentIntent.getClientSecret());
+             * response.put("orderId", order.getId().toString());
+             * return ResponseEntity.status(HttpStatus.CREATED).body(response);
+             */
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {

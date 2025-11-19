@@ -91,4 +91,18 @@ public class AdminController {
         
         return "redirect:/admin/orders";
     }
+
+    // deleting one order from the database
+    @PostMapping("/orders/{id}/delete")
+    public String deleteOrder(@PathVariable Long id) {
+        orderRepository.deleteById(id);
+        return "redirect:/admin/orders";
+    }
+
+    // Delete all orders, clears the whole database
+    @PostMapping("/orders/delete-all")
+    public String deleteAllOrders() {
+        orderRepository.deleteAll();
+        return "redirect:/admin/orders";
+    }
 }

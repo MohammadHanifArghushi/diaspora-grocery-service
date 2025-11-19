@@ -25,4 +25,10 @@ public class Recipient {
 
     @NotBlank
     private String city;
+
+    @NotBlank
+    private String postalCode;
+
+    @NotBlank
+    private String country;
 }
