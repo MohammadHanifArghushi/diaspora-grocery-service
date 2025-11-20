@@ -105,4 +105,35 @@ public class AdminController {
         orderRepository.deleteAll();
         return "redirect:/admin/orders";
     }
+
+    // TEMPORARY TEST ENDPOINT: Send a test email to verify configuration
+    // TODO: I will remove this endpoint before final version 
+    // Usage: /admin/test-email?email=your@email.com
+    @GetMapping("/test-email")
+    @ResponseBody
+    public String testEmail(@RequestParam(required = false, defaultValue = "test@example.com") String email) {
+        try {
+            // Create a dummy order for testing
+            Order testOrder = Order.builder()
+                .id(999L)
+                .payerEmail(email)
+                .totalAmount(new java.math.BigDecimal("50.00"))
+                .status(OrderStatus.PENDING)
+                .orderDate(java.time.LocalDateTime.now())
+                .recipient(fi.haagahelia.diaspora_grocery_service.domain.Recipient.builder()
+                    .name("Test Recipient")
+                    .phone("+93 123 456 789")
+                    .address("123 Test Street")
+                    .city("Test City")
+                    .postalCode("12345")
+                    .country("Afghanistan")
+                    .build())
+                .build();
+            
+            emailService.sendOrderConfirmationEmail(testOrder);
+            return "Test email sent to: " + email + " - Check your email and application logs!";
+        } catch (Exception e) {
+            return "Failed to send test email: " + e.getMessage();
+        }
+    }
 }

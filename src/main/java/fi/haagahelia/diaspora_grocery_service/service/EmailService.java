@@ -60,10 +60,20 @@ public class EmailService {
             message.setTo(to);
             message.setSubject(subject);
             message.setText(body);
+            
+            System.out.println("=== EMAIL DEBUG INFO ===");
+            System.out.println("From: " + fromEmail);
+            System.out.println("To: " + to);
+            System.out.println("Subject: " + subject);
+            System.out.println("SMTP Host: smtp.gmail.com");
+            System.out.println("========================");
+            
             mailSender.send(message);
-            System.out.println("Email sent successfully to: " + to);
+            System.out.println(" Email sent successfully to: " + to);
         } catch (Exception e) {
-            System.err.println("Failed to send email to " + to + ": " + e.getMessage());
+            System.err.println(" FAILED to send email to " + to);
+            System.err.println("Error type: " + e.getClass().getName());
+            System.err.println("Error message: " + e.getMessage());
             e.printStackTrace();
         }
     }
